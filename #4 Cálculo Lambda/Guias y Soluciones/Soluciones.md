@@ -523,15 +523,3 @@ case [] of {[] → N | h :: t → O} → N
 ―――――――――――――――――――――――――――――――――――――― E-CASE-CONS
 case h::t of {[] → N | h :: t → O} → O
 ```
-
-
-―   ⊢   Γ
-σ   τ   π
-₁   ₂   ∅
-⟨   ⟩   →
-
-# Ejercicio 23
-
-# Ejercicio 24
-
-# Ejercicio 27
