@@ -2,23 +2,23 @@
 
 Vamos a analizar sintáxis, es decir, nos interesa ver que las expresiones estén sintacticamente bien formadas. No nos interesa ver si son semánticamente validas. Si son reducibles o no, no nos interesa.
 
-(a) Válida. Expresion de término.
-(b) Válida. Expresión de término. Aplicación.
-(c) Inválido. M es un metavariable de la gramática, no un nombre de variable concreto, así que no es un término válido.
-(d) Inválida. Como M es una metavariable de la gramática, no podemos aplicarle a una metavariable de la gramática, otra metavariable de la gramática
-(e) Válida. Es una aplicación de términos bien formados.
-(f) Válida. Es una aplicación de términos bien formados.
-(g) Inválida. En una abstracción, las variables ligadas deben estar tipadas.
-(h) Inválida. En una abstracción, las variables ligadas deben estar tipadas, y σ es una metavariable, no un tipo.
-(i) Válida. Es una expresion de un término, en particular una abstracción.
-(j) Inválida. El tipo de una variable debe ser un tipo ya dado, y no un término (por más que este reduzca a un tipo válido).
-(k) Inválida. Es una metavariable.
-(l) Válida. Es una expresión de tipo.
-(m) Válida. Es una expresión de tipo.
-(n) Válida. Es una expresión de tipo.
-(ñ) Válida. Es una expresión de tipo.
-(o) Inválida. succ true no cumple con la sintaxis ya que deberia escribirse como succ(true).
-(p) Válida. Es una abstracción.
+(a) Válida. Expresion de término. \ 
+(b) Válida. Expresión de término. Aplicación. \
+(c) Inválido. M es un metavariable de la gramática, no un nombre de variable concreto, así que no es un término válido. \
+(d) Inválida. Como M es una metavariable de la gramática, no podemos aplicarle a una metavariable de la gramática, otra metavariable de la gramática \
+(e) Válida. Es una aplicación de términos bien formados. \
+(f) Válida. Es una aplicación de términos bien formados. \
+(g) Inválida. En una abstracción, las variables ligadas deben estar tipadas. \
+(h) Inválida. En una abstracción, las variables ligadas deben estar tipadas, y σ es una metavariable, no un tipo. \
+(i) Válida. Es una expresion de un término, en particular una abstracción. \
+(j) Inválida. El tipo de una variable debe ser un tipo ya dado, y no un término (por más que este reduzca a un tipo válido). \
+(k) Inválida. Es una metavariable. \
+(l) Válida. Es una expresión de tipo. \
+(m) Válida. Es una expresión de tipo. \
+(n) Válida. Es una expresión de tipo. \
+(ñ) Válida. Es una expresión de tipo. \
+(o) Inválida. succ true no cumple con la sintaxis ya que deberia escribirse como succ(true). \
+(p) Válida. Es una abstracción. \
 
 # Ejercicio 3
 
