@@ -187,8 +187,9 @@ prefijos lista =
 
 -- dada una lista, devuelve todas sus sublistas: listas de elementos que aparecen consecutivos en la lista original.
 -- sublistas [5, 1, 2] → [[], [5], [1], [2], [5, 1], [1, 2], [5, 1, 2]]
--- sublistas (x:xs) = drop 1 (prefijos (x:xs)) ++ sublistas xs 
-
+-- Esta implementación depende del ejercicio anterior (prefijos), hay que pensarlo un poco para ver porque!
+sublistas :: [a] -> [[a]]
+sublistas = concatMap (\e -> tail $ foldl (\ac x -> drop 1 (head ac) : ac) [e] e) . prefijos
 
 
 -----------------------------------------------------
