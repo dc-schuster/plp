@@ -716,3 +716,67 @@ nivel t = foldABNV (\r n -> if n == 0 then [r] else [])
                    (\r recUni n -> if n == 0 then [r] else recUni (n - 1))
                    (\recI r recD n -> if n == 0 then [r] else (recI (n - 1)) ++ (recD (n - 1)))
                    t
+
+
+
+-- https://www.cubawiki.com.ar/images/d/dc/PLP-1C-2025-1R.pdf
+
+data LineaProd = Materiales [String]
+               | Agregar String LineaProd
+               | Unir LineaProd LineaProd
+
+-- Definamos foldLineaProd. Necesitamos una función para el caso materiales, otra para agregar, otra para unir
+foldLineaProd :: ([String] -> b) -> (String -> b -> b) -> (b -> b -> b) -> LineaProd -> b
+foldLineaProd fMat fAg fU lp =
+    case lp of
+        Materiales mats -> fMat mats
+        Agregar str lp' -> fAg str (flpRec lp')
+        Unir lp1 lp2    -> fU (flpRec lp1) (flpRec lp2)
+    where flpRec = foldLineaProd fMat fAg fU
+
+-- Ahora el esquema de recursión primitivo es similar al fold, solo que debe recibir también, la estructura
+recLineaProd :: ([String] -> b) -> (String -> b -> LineaProd -> b) -> (b -> b -> LineaProd -> LineaProd -> b) -> LineaProd -> b
+recLineaProd fMat fAg fU lp =
+    case lp of
+        Materiales mats -> fMat mats
+        Agregar str lp' -> fAg str (recRec lp') lp'
+        Unir lp1 lp2    -> fU (recRec lp1) (recRec lp2) lp1 lp2
+    where recRec = recLineaProd fMat fAg fU
+
+materialesUsados :: LineaProd -> [String]
+materialesUsados = 
+    foldLineaProd 
+    id
+    (\mat rec -> nub (mat : rec))
+    (\rec1 rec2 -> nub (rec1 ++ rec2))
+
+sublineasDisjuntas :: LineaProd -> Bool
+sublineasDisjuntas =
+    recLineaProd
+    const True
+    (\_ rec _ -> rec) -- Solo nos interesa la unión
+    (\rec1 rec2 lp1 lp2 -> rec1 && rec2 && (null (intersect (materialesUsados lp1) (materialesUsados lp2))))
+
+mismaEstructuraLP :: LineaProd -> LineaProd -> Bool
+mismaEstructuraLP lp1 =
+        recLineaProd 
+        checkMats
+        checkAgregar
+        checkUnir
+        lp1
+    where
+        checkMats = (
+            \_ -> \lp2 -> case lp2 of
+                Materiales _ -> True
+                _            -> False
+        )
+        checkAgregar = (
+            \_ rec _ -> \lp2 -> case lp2 of
+                Agregar _ lp2' -> rec lp2'
+                _           -> False
+        )
+        checkUnir = (
+            \rec1 rec2 _ _ -> \lp2 -> case lp2 of
+                Unir lp1' lp2' -> rec1 lp1' && rec2 lp2'
+                _        -> False
+        )
