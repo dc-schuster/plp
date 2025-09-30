@@ -1641,4 +1641,96 @@ length xs ≤ altura (Bin i r d)
 = {A1} length xs ≤ 1 + max (altura i) (altura d)
 ```
 
-Conocemos una propiedad matemática que dice: $L_{xs} \leq A_i \land L_{xs} \leq A_d \implies L_{xs} \leq max(A_i, A_d)$. Con esto podríamos terminar de demostrar la propiedad. De todas maneras vamos a hacer un desarrollo mas extenso.
+Conocemos una propiedad matemática que dice: $L_{xs} \leq A_i \land L_{xs} \leq A_d \implies L_{xs} \leq max(A_i, A_d)$. Con esto podríamos terminar de demostrar la propiedad.
+
+
+## [2025 1C](https://www.cubawiki.com.ar/images/d/dc/PLP-1C-2025-1R.pdf)
+
+Consideramos las siguientes definiciones:
+
+```hs
+data AIH a = Hoja a
+           | Bin (AIH a) (AIH a)
+
+(++) :: [a] -> [a] -> [a]
+{++0} [] ++ ys = ys
+{++1} (x:xs) ++ ys = x : (xs ++ ys)
+
+reverse :: [a] -> [a]
+reverse = foldr (\x rec -> rec ++ (x:[])) []
+
+foldr :: (a -> b) -> b -> [a] -> b
+{F0} foldr f z [] = z
+{F1} foldr f z (x:xs) = f x (foldr f z xs)
+
+hojas :: AIH a -> [a]
+{H0} hojas (Hoja h) = [h]
+{H1} hojas (Bin i d) = hojas i ++ hojas d
+
+espejo :: AIH a -> AIH a
+{E0} espejo (Hoja h) = Hoja h
+{E1} espejo (Bin i d) = Bin (espejo d) (espejo i)
+```
+
+Queremos demostrar la siguiente propiedad: `∀ x :: AIH a. hojas (espejo x) = reverse (hojas x)`
+
+Sea $P(x) \equiv$ `hojas (espejo x) = reverse (hojas x)`, queremos demostrar $P(x)$ `∀ x :: AIH a`.
+
+Por generación de árboles binarios con información en las hojas, tenemos que `AIH a` puede ser de la forma `Hoja a` o `Bin i d`.
+
+### Caso Base (`Hoja a`)
+
+Usando `x = Hoja a`, queremos ver que vale $P(x)$. En particular, queremos ver que vale `hojas (espejo (Hoja a)) = reverse (hojas (Hoja a))`
+
+```hs
+-- LHS
+hojas (espejo (Hoja a))
+= {E0} hojas (Hoja a)
+= {H0} = [a]
+
+-- RHS
+reverse (hojas (Hoja a))
+= {H0} reverse [a]
+= {R} foldr (\x rec -> rec ++ (x:[])) [] [a] -- [a] = (a:[])
+= {F1} (\x rec -> rec ++ (x:[])) a (foldr (\x rec -> rec ++ (x:[])) [] [])
+= {β} (\rec -> rec ++ (a:[])) (foldr (\x rec -> rec ++ (x:[])) [] [])
+= {F0} (\rec -> rec ++ (a:[])) []
+= {β} [] ++ (a:[]) -- a:[] = [a]
+= {++0} = [a]
+```
+
+Obtuvimos el mismo resultado de ambos lados de la igualdad, por lo tanto la igualdad es válida, y queda el caso base probado $\checkmark$.
+
+
+### Paso Inductivo (Bin i d)
+
+Ahora queremos ver que `P(Bin i d)` es válido. Sean nuestras hipótesis inductivas sobre el subárbol izquierdo y derecho:
+- $P(i) \equiv$ hojas (espejo i) = reverse (hojas i)
+- $P(d) \equiv$ hojas (espejo d) = reverse (hojas d)
+
+```hs
+-- LHS
+hojas (espejo (Bin i d))
+= {E1} hojas (Bin (espejo d) (espejo i))
+= {H1} hojas (espejo d) ++ hojas (espejo i)
+= {HI} reverse (hojas d) ++ hojas (espejo i)
+= {HI} reverse (hojas d) ++ reverse (hojas i)
+
+-- RHS
+reverse (hojas (Bin i d))
+= {R} reverse (hojas i ++ hojas d)
+```
+
+Definimos el Lema: `∀xs :: [a]. ∀ys :: [a]. reverse xs ++ reverse ys = reverse (ys ++ xs)`. Hacemos uso del Lema en la demostración:
+```hs
+-- LHS
+...
+= {HI} reverse (hojas d) ++ reverse (hojas i)
+= {Lema} reverse (hojas i ++ hojas d)
+
+-- RHS
+...
+= {R} reverse (hojas i ++ hojas d)
+```
+
+Llegamos a lo mismo de ambos lados de la igualdad, por lo tanto el caso `x = Bin i d` es verdadero $\checkmark$.
