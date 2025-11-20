@@ -56,7 +56,7 @@ msort([3,1,2,1], X).  % X = [1,1,2,3]
 ```
 
 
-- `between(Low,High,X)` Genera o verifica valores entre Low y High.
+- `between(Low, High, X)` Genera o verifica valores entre Low y High.
 ```
 between(1,5,X).  % X = 1 ; 2 ; 3 ; 4 ; 5
 ```
@@ -74,7 +74,7 @@ union([1,2],[2,3], U).  % U = [1,2,3]
 ```
 
 
-- `intersection(Set1,Set2,Intersection)`
+- `intersection(Set1, Set2, Intersection)`
 ```
 intersection([1,2,3],[2,3,4], X).  % X = [2,3]
 ```
@@ -83,7 +83,7 @@ intersection([1,2,3],[2,3,4], X).  % X = [2,3]
 - `subset(Sub, Set)` True si todos los elementos de Sub están en Set.
 
 
-- `subtract(Set,Remove,Result)` Quita de la primera lista todos los elementos presentes en la segunda.
+- `subtract(Set, Remove, Result)` Quita de la primera lista todos los elementos presentes en la segunda.
 ```
 subtract([1,2,3,4],[2,4], X).  % X = [1,3]
 ```
@@ -102,7 +102,7 @@ delete([1,2,1,3], 1, X).   % X = [2,3]
 ```
 
 
-- `numlist(Low,High,List)` Genera lista consecutiva.
+- `numlist(Low, High, List)` Genera lista consecutiva.
 ```
 numlist(3,7,L).   % L = [3,4,5,6,7]
 ```

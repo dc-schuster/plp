@@ -806,3 +806,36 @@ fibonacci(X) :-
 
 
 
+% https://www.cubawiki.com.ar/images/0/03/PLP-1C2025-2r.pdf
+
+unico(L, Elem) :-
+    select(Elem, L, LSinElem),
+    not(member(Elem, LSinElem))
+.
+
+
+noTodosSonUnicos([_ | XS]) :- noTodosSonUnicos(XS).
+noTodosSonUnicos([X | XS]) :- member(X, XS).
+
+
+sinRepetidos(L) :- not(noTodosSonUnicos(L)).
+
+
+formula(VS, F, 0) :- member(F, VS).
+formula(VS, F, CantidadLogicas) :-
+    CantidadLogicas > 0,
+    CantidadLogicasMenos1 is CantidadLogicas - 1,
+    formula(VS, F1, CantidadLogicasMenos1),
+    F = neg(F1)
+.
+formula(VS, F, CantidadLogicas) :-
+    CantidadLogicas > 1,
+    CantidadLogicasMenos2 is CantidadLogicas - 2,
+    formula(VS, F1, CantidadLogicasMenos2),
+    formula(VS, F2, CantidadLogicasMenos2),
+    F = imp(F1, F2)
+.
+formula(VS, F) :-
+    desde(0, CantidadLogicas),
+    formula(VS, F, CantidadLogicas)
+.
