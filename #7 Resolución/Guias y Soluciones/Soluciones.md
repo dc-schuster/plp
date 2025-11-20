@@ -4,7 +4,7 @@
 - Utilizar únicamente cláusulas de Horn.
 - ~~Utilizar cada cláusula a lo sumo una vez.~~
 - Empezar por una cláusula objetivo (sin literales positivos)
-- Empezar por una cláusula que provenga de la negación de lo que se quiere demostrar.
+- ~~Empezar por una cláusula que provenga de la negación de lo que se quiere demostrar.~~
 - ~~Recorrer el espacio de búsqueda de arriba hacia abajo y de izquierda a derecha.~~
 - Utilizar la regla de resolución binaria en lugar de la general.
 
@@ -589,4 +589,4 @@ De (11) y (1) tengo : MGU({ev(g, n(f, sup(g))) ≤ sup(g), ev(F, N) ≤ X})
 
 De (12) y (3) tengo : MGU({cota(g, sup(g)), cota(F, sup(F))})
     - S_13 = {F := g}
-    - (13) = {}
+    - (13) = 
