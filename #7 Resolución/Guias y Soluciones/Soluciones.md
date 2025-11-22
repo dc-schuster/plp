@@ -495,6 +495,26 @@ De estas fórmulas, obtenemos la siguiente forma clausal:
 
 Utilizando resolución, encontremos una solución.
 
+De (5) y (1) tengo : MGU({member(X, [X | T]), member(b, R)})
+    - S_6 = {X := b, R := [X | T]}
+    - (6) = {¬esSublista([a, b], [b | T])}
+
+De (6) y (4) tengo : MGU({esSublista([a, b], [b | T]), esSublista(L, [X | XS])})
+    - S_7 = {L := [a, b], X := b, T := XS}
+    - (7) = {¬member(b, [a, b]), ¬esSublista([a, b], XS)}
+
+De (7) y (3) tengo : MGU({esSublista([a, b], XS), esSublista(L, [])})
+    - S_8 = {L := [a, b], XS := []}
+    - (8) = {¬member(b, [a, b])}
+
+De (8) y (2) tengo : MGU({member(b, [a, b]), member(X, [Y | XS])})
+    - S_9 = {X := b, Y := a, XS := [b]}
+    - (9) = {¬member(b, [b])}
+
+De (9) y (1) tengo : MGU({member(b, [b]), member(X, [X | T])})
+    - S_10 = {X := b, T := []}
+    - (10) = {}
+
 
 ## [2025 1C (Recuperatorio)](https://www.cubawiki.com.ar/images/0/03/PLP-1C2025-2r.pdf)
 
@@ -590,3 +610,18 @@ De (11) y (1) tengo : MGU({ev(g, n(f, sup(g))) ≤ sup(g), ev(F, N) ≤ X})
 De (12) y (3) tengo : MGU({cota(g, sup(g)), cota(F, sup(F))})
     - S_13 = {F := g}
     - (13) = 
+
+
+
+⟹ ¬ ∧ ∀ ∃ ∨ ≤
+
+
+
+
+
+
+
+
+
+
+
