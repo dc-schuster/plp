@@ -588,6 +588,40 @@ proximoNumPoderoso(APartir, SiguientePoderoso) :-
 .
 
 
+% -----------------------------------------------------
+% -------------------- Ejercicio 20 -------------------
+% -----------------------------------------------------
+
+arbol(nil, 0).
+arbol(bin(I, R, D), N) :-
+    member(R, [ka, pow]),    
+    N > 0,
+    Nm1 is N - 1,
+    between(0, Nm1, NIzq),
+    NDer is Nm1 - NIzq,
+    arbol(I, NIzq),
+    arbol(D, NDer)
+.
+arbol(A) :-
+    desde(0, N),
+    arbol(A, N)
+.
+
+
+nodos(nil, []).
+nodos(bin(I, R, D), [R | XS]) :-
+    nodos(I, NodosI), nodos(D, NodosD),
+    append(NodosI, NodosD, XS)
+.
+
+nodosEn(bin(I, R, D), L) :-
+    member(R, L),
+    nodosEn(I, L),
+    nodosEn(D, L)
+.
+
+
+
 
 % -----------------------------------------------------
 % ---------------- Ejercicios de Parcial --------------
@@ -607,30 +641,22 @@ proximoNumPoderoso(APartir, SiguientePoderoso) :-
 % Si queremos "expander" los caminos de forma equitativa tanto para derecha/izquierda/arriba/abajo, podríamos 
 % pedir que la sumatoria de los X/Y de cada coordenada de la lista, 
 
-nat(0).
-nat(N) :-
-    nat(M),
-    N is M + 1
+siguientePaso((X, Y), (X, Yp1)) :- Yp1 is Y + 1.
+siguientePaso((X, Y), (X, Ym1)) :- Ym1 is Y - 1.
+siguientePaso((X, Y), (Xp1, Y)) :- Xp1 is X + 1.
+siguientePaso((X, Y), (Xm1, Y)) :- Xm1 is X - 1.
+
+caminoDesde(Actual, [Actual], 0).
+caminoDesde(Actual, [Actual | Resto], Pasos) :-
+    Pasos > 0,
+    siguientePaso(Actual, Siguiente),
+    Pasom1 is Pasos - 1,
+    caminoDesde(Siguiente, Resto, Pasom1)
 .
 
-moverUno((X, Y), (X, Yp1)) :- Yp1 is Y + 1.
-moverUno((X, Y), (X, Ym1)) :- Ym1 is Y - 1.
-moverUno((X, Y), (Xp1, Y)) :- Xp1 is X + 1.
-moverUno((X, Y), (Xm1, Y)) :- Xm1 is X - 1.
-
-caminosConSumatoria(0, CoordenadaInicial, []). % No me puedo mover
-caminosConSumatoria(Sumatoria, (XInicial, YInicial), [(X, Y) | Camino]) :-
-    Sumatoria > 0,
-    
-    % Para que sea un camino válido, tenemos que movernos nada más y nada menos que 1 paso respecto al anterior.
-    moverUno((XInicial, YInicial), (X, Y)),
-    SumatoriaN is Sumatoria - 1,
-    caminosConSumatoria(SumatoriaN, (X, Y), Camino)
-.
-
-caminoDesde((X, Y), [(X, Y) | Camino]) :-
-    nat(Expansion),
-    caminosConSumatoria(Expansion, (X, Y), Camino)
+caminoDesde(Inicial, Camino) :-
+    desde(0, Pasos),
+    caminoDesde(Inicial, Camino, Pasos)
 .
 
 
